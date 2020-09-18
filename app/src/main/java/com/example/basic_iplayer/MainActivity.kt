@@ -21,7 +21,7 @@ class networkRequest( url: String ){
         .url(url)
         .build()
 
-    fun makeRequest(callBack: MainActivity) {
+    fun <T : Any> makeRequest(responseObj: T, callBack: (T) -> Unit) {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 e.printStackTrace()
@@ -32,15 +32,15 @@ class networkRequest( url: String ){
                     val stringResponse: String = response.body()!!.string()
 
                     val gson = Gson()
-                    val convertedResponse = gson.fromJson(stringResponse, iPlayerReqObj::class.java)
-                    Log.i("test network", convertedResponse.version)
-                    callBack.useAdapter(convertedResponse)
+                    val convertedResponse = gson.fromJson(stringResponse, responseObj::class.java)
+
+                    callBack(convertedResponse)
                     }
                 }
             })
 
         }
-    }
+}
 
 
 class MainActivity : AppCompatActivity(), OnItemClickListener {
@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
         setContentView(R.layout.activity_main)
 
         val url = "https://ibl.api.bbci.co.uk/ibl/v1/categories?rights=mobile"
-        networkRequest(url).makeRequest(this)
+        networkRequest(url).makeRequest(iPlayerReqObj(), this::useAdapter)
 
     }
 }

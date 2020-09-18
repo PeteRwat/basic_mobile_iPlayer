@@ -1,6 +1,6 @@
 package com.example.basic_iplayer
 
-data class iPlayerReqObj(val version: String, val schema: String, val categories: Array<Category>) {
+data class iPlayerReqObj(val version: String ="", val schema: String = "", val categories: Array<Category> = arrayOf(Category())) {
 
     //overrides were created by IDE automatically
     override fun equals(other: Any?): Boolean {
