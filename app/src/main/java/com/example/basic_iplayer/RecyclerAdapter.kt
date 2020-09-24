@@ -1,5 +1,6 @@
 package com.example.basic_iplayer
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +13,10 @@ class RecyclerAdapter(private val menuData: Array<Category>, val itemClickListen
     class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val cardTextView: TextView = view.findViewById<TextView>(R.id.main_menu_text)
 
-        fun bind(title:String, clickListener: OnItemClickListener)
+        fun bind(id: String, title:String, clickListener: OnItemClickListener)
         {
             itemView.setOnClickListener {
-                clickListener.onItemClicked(title)
+                clickListener.onItemClicked(id, title)
             }
         }
 
@@ -33,13 +34,13 @@ class RecyclerAdapter(private val menuData: Array<Category>, val itemClickListen
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.cardTextView.text = menuData[position].title
-        holder.bind(menuData[position].id, itemClickListener)
+        holder.bind(menuData[position].id, menuData[position].title, itemClickListener)
     }
 
     override fun getItemCount() = menuData.size
 }
 
 interface OnItemClickListener{
-    fun onItemClicked(title:String)
+    fun onItemClicked(id: String, title: String)
 }
 
