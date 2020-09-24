@@ -2,13 +2,10 @@ package com.example.basic_iplayer
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
-import okhttp3.*
-import java.io.IOException
+
 
 
 

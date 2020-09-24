@@ -6,11 +6,27 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class CategoryHightlightActivity : AppCompatActivity() {
+    private lateinit var elementRecyclerView: RecyclerView
 
     fun displayCategoryInfo (convertedResponse: CategoryReqObj) {
-        Log.i("converted res", convertedResponse.toString())
+        runOnUiThread {
+            elementRecyclerView = findViewById<RecyclerView>(R.id.categoryHighlights).apply {
+                // use this setting to improve performance if you know that changes
+                // in content do not change the layout size of the RecyclerView
+                setHasFixedSize(true)
+                // use a linear layout manager
+                layoutManager = LinearLayoutManager(this@CategoryHightlightActivity)
+                // specify an viewAdapter (see also next example)
+                if(convertedResponse is CategoryReqObj){
+                    adapter = ElementRecyclerAdapter(convertedResponse.category_highlights.elements)
+                }
+            }
+        }
+        Log.i("converted res", convertedResponse.category_highlights.elements[4].title)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
