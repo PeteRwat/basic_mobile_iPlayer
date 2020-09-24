@@ -4,7 +4,7 @@ data class CategoryReqObj (val category_highlights: CatHighLights = CatHighLight
 
 data class CatHighLights (val elements: Array<Element> = arrayOf(Element()))
 
-data class Element (val title: String = "", val image: ImageDetails = ImageDetails(), val count: Int? = 1, val subtitle: String? = "", val master_brand: MasterBrand = MasterBrand(), val type: String = "" )
+data class Element (val title: String = "", val images: ImageDetails = ImageDetails(), val count: Int? = 1, val subtitle: String? = "", val master_brand: MasterBrand = MasterBrand(), val type: String = "" )
 
 data class ImageDetails (val standard: String = "")
 
