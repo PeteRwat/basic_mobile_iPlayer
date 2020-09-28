@@ -1,6 +1,5 @@
 package com.example.basic_iplayer
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
 
-class ElementRecyclerAdapter(private val elementData: Array<Element>) : //, val itemClickListener: OnItemClickListener
+class ElementRecyclerAdapter(private val elementData: Array<Element>, val elementClickListener: OnElementClickListener) :
     RecyclerView.Adapter<ElementRecyclerAdapter.MyViewHolder>() {
 
     class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
@@ -19,12 +18,12 @@ class ElementRecyclerAdapter(private val elementData: Array<Element>) : //, val 
         val cardTitle: TextView = view.findViewById<TextView>(R.id.eleTitle)
         val cardDetails: TextView = view.findViewById<TextView>(R.id.eleDetails)
 
-//        fun bind(id: String, title:String, clickListener: OnItemClickListener)
-//        {
-//            itemView.setOnClickListener {
-//                clickListener.onItemClicked(id, title)
-//            }
-//        }
+        fun bind(element: Element, clickListener: OnElementClickListener)
+        {
+            itemView.setOnClickListener {
+                clickListener.onElementClicked(element)
+            }
+        }
 
     }
 
@@ -42,7 +41,7 @@ class ElementRecyclerAdapter(private val elementData: Array<Element>) : //, val 
         val imageURL: String = elementData[position].images.standard.replace("{recipe}", "160x90")
 
         Picasso.get().load(imageURL).into(holder.cardImage)
-        holder.cardMasterBrand.text = "hold"
+
         holder.cardTitle.text = elementData[position].title
         if(elementData[position].type == "episode"){
             holder.cardMasterBrand.text = elementData[position].master_brand.titles.small
@@ -51,13 +50,13 @@ class ElementRecyclerAdapter(private val elementData: Array<Element>) : //, val 
             holder.cardMasterBrand.text = "Collection"
             holder.cardDetails.text = "${elementData[position].count.toString()} episodes"
         }
-        //holder.bind(menuData[position].id, menuData[position].title, itemClickListener)
+        holder.bind(elementData[position], elementClickListener)
     }
 
     override fun getItemCount() = elementData.size
 }
 
-//interface OnItemClickListener{
-//    fun onItemClicked(id: String, title: String)
-//}
+interface OnElementClickListener{
+    fun onElementClicked(element: Element)
+}
 

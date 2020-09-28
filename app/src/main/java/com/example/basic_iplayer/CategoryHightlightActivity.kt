@@ -1,16 +1,41 @@
 package com.example.basic_iplayer
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class CategoryHightlightActivity : AppCompatActivity() {
+
+class CategoryHightlightActivity : AppCompatActivity(), OnElementClickListener {
     private lateinit var elementRecyclerView: RecyclerView
+
+    override fun onElementClicked(element: Element) {
+        if(element.type == "episode"){
+            val epTitle: String = element.title
+            val epMasterBrand: String = element.master_brand.titles.small
+            val epDetails: String = element.subtitle
+            val epSynopses: String = element.synopses.medium
+            val epDuration: String = element.versions[0].duration.text
+            val epFirstShown: String = element.release_date
+            val epAvailability: String = element.versions[0].availability.remaining.text
+            val epImageURL: String = element.images.standard.replace("{recipe}","432x243")
+
+            val intent = Intent(this, EpisodeActivity::class.java).apply {
+                putExtra("EPISODE_TITLE", epTitle)
+                putExtra("EPISODE_MASTER_BRAND", epMasterBrand)
+                putExtra("EPISODE_DETAILS", epDetails)
+                putExtra("EPISODE_SYNOPSES", epSynopses)
+                putExtra("EPISODE_DURATION", epDuration)
+                putExtra("EPISODE_FIRST_SHOWN", epFirstShown)
+                putExtra("EPISODE_AVAILABILITY", epAvailability)
+                putExtra("EPISODE_IMAGE_URL", epImageURL)
+            }
+            startActivity(intent)
+        }
+    }
 
     fun displayCategoryInfo (convertedResponse: CategoryReqObj) {
         runOnUiThread {
@@ -22,22 +47,17 @@ class CategoryHightlightActivity : AppCompatActivity() {
                 layoutManager = LinearLayoutManager(this@CategoryHightlightActivity)
                 // specify an viewAdapter (see also next example)
                 if(convertedResponse is CategoryReqObj){
-                    adapter = ElementRecyclerAdapter(convertedResponse.category_highlights.elements)
+                    Log.i("cat obj", convertedResponse.toString())
+                    adapter = ElementRecyclerAdapter(convertedResponse.category_highlights.elements, this@CategoryHightlightActivity)
                 }
             }
         }
-        Log.i("converted res", convertedResponse.category_highlights.elements[4].title)
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_category_hightlight)
-
-        val backButton = findViewById<Button>(R.id.backButton)
-        backButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
 
         val categoryID = intent.getStringExtra("CATEGORY-ID")
         val categoryTitle = intent.getStringExtra("CATEGORY-TITLE")

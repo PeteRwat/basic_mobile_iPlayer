@@ -1,6 +1,5 @@
 package com.example.basic_iplayer
 
-import android.util.Log
 import com.google.gson.Gson
 import okhttp3.*
 import java.io.IOException
